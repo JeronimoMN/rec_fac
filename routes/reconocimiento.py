@@ -1,3 +1,4 @@
+import cv2
 from fastapi import APIRouter, File, UploadFile
 import os
 import uuid
@@ -7,11 +8,15 @@ router = APIRouter()
 
 IMAGEDIR = "images/"
 
+
 @router.post("/upload/")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile ):
+
     """
     Subir un archivo y procesar reconocimiento facial.
     """
+
+    print(file.content_type)
     file.filename = f"{uuid.uuid4()}.jpg"
     contents = await file.read()
 
@@ -21,6 +26,4 @@ async def upload_file(file: UploadFile = File(...)):
 
     recognition_result = predict_identity(file_path)
 
-    return {
-        recognition_result[0],
-    }
+    return recognition_result

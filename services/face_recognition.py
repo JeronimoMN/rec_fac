@@ -56,9 +56,9 @@ def predict_identity(image_path):
         face = cv2.resize(face, (160, 160))
 
         test_im = get_embedding(face)
-        test_im = np.array(test_im).reshape(1, -1)
+        test_im = np.array(test_im).reshape(1, -1) #Convierte el embedding a un array de 2 dimensiones.
 
-        ypreds = model.predict(test_im)
+        #ypreds = model.predict(test_im)
 
         if UMBRAL == 1:
             coincidencias = [
@@ -68,9 +68,9 @@ def predict_identity(image_path):
             ]
 
             if coincidencias:
-                return encoder.inverse_transform(ypreds)
+                return True
             else:
-                return None
+                return False
         else:
             return "Error: El umbral debe ser igual a 1 para continuar."
     else:
