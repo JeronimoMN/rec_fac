@@ -6,13 +6,17 @@ import pickle
 from sklearn.preprocessing import LabelEncoder
 
 # Cargar el modelo SVM
-with open("files/svm_model_160x160.pkl", "rb") as f:
+with open("files/svm_model_pragmatic.pkl", "rb") as f:
     model = pickle.load(f)
 
 # Cargar los embeddings y las etiquetas
-data = np.load("files/faces_embeddings_done_4classes.npz")
+data = np.load("files/faces_embeddings_pragmatic.npz")
 EMBEDDED_X = data["arr_0"]
 Y = data["arr_1"]
+
+print("Etiquetas")
+print(Y)
+
 
 # Inicializar el detector de rostros y el embebedor
 detector = MTCNN()
@@ -22,7 +26,7 @@ embedder = FaceNet()
 encoder = LabelEncoder()
 encoder.fit(Y)
 
-UMBRAL = 1
+umbrall = 1
 
 def get_embedding(face_img):
     """
@@ -58,13 +62,14 @@ def predict_identity(image_path):
         test_im = get_embedding(face)
         test_im = np.array(test_im).reshape(1, -1) #Convierte el embedding a un array de 2 dimensiones.
 
-        #ypreds = model.predict(test_im)
+        ypreds = model.predict(test_im)
+        identity = encoder.inverse_transform(ypreds)
 
-        if UMBRAL == 1:
+        if umbrall == 1:
             coincidencias = [
                 embedding
                 for embedding in EMBEDDED_X
-                if es_coincidencia(test_im, embedding, UMBRAL)
+                if es_coincidencia(test_im, embedding, umbrall)
             ]
 
             if coincidencias:

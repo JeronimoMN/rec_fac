@@ -59,7 +59,7 @@ class FACELOADING:
         return np.asarray(self.X), np.asarray(self.Y)
 
 @router.post("/train/")
-async def create_model(dataset_dir: str = "files/dataset"):
+async def create_model(dataset_dir: str = "files/dataset1"):
     """
     Entrenar un nuevo modelo SVM basado en el dataset proporcionado.
     """
@@ -84,7 +84,7 @@ async def create_model(dataset_dir: str = "files/dataset"):
     EMBEDDED_X = np.array(EMBEDDED_X)
 
     # Guardar embeddings y etiquetas
-    embeddings_path = "files/faces_embeddings.npz"
+    embeddings_path = "files/faces_embeddings_pragmatic.npz"
     np.savez_compressed(embeddings_path, EMBEDDED_X, Y)
 
     # Codificar etiquetas
@@ -99,7 +99,7 @@ async def create_model(dataset_dir: str = "files/dataset"):
     model.fit(X_train, Y_train)
 
     # Guardar el modelo
-    model_path = "files/svm_model.pkl"
+    model_path = "files/svm_model_pragmatic.pkl"
     with open(model_path, "wb") as f:
         pickle.dump(model, f)
 
